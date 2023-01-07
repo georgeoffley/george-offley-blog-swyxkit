@@ -117,9 +117,17 @@
 		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight text-black dark:text-white md:text-4xl">
 			Most Popular
 		</h3>
-		<IndexCard href="/welcome" title="Welcome to swyxkit!" stringData="123,456 views">
-			This is swyx's preferred starter for Svelte projects!
-		</IndexCard>
+		<IndexCard
+			href="/shared-memory-in-docker"
+			title="Shared Memory in Docker"
+			stringData="Many views"
+		/>
+		<IndexCard
+			href="/working-with-context-in-go"
+			title="Working with Context in Go"
+			stringData="Many views"
+		/>
+		<IndexCard href="/context-in-react" title="Context In React" stringData="Manyviews" />
 
 		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight text-black dark:text-white md:text-4xl">
 			All Posts

@@ -75,8 +75,6 @@
 	<div class="mb-8">
 		<Comments ghMetadata={json.ghMetadata} />
 	</div>
-
-	<Newsletter />
 </div>
 
 <style>
