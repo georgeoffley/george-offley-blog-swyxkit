@@ -1,7 +1,7 @@
 <script>
 	import '../tailwind.css';
 	import Nav from '../components/Nav.svelte';
-	import { MY_TWITTER_HANDLE, MY_YOUTUBE, REPO_URL, SITE_TITLE } from '$lib/siteConfig';
+	import { MY_TWITTER_HANDLE, MY_YOUTUBE, REPO_URL, SITE_TITLE, MY_GITHUB } from '$lib/siteConfig';
 </script>
 
 <svelte:head>
@@ -40,7 +40,7 @@
 				class="text-gray-500 transition hover:text-gray-300"
 				target="_blank"
 				rel="noopener noreferrer"
-				href={REPO_URL}
+				href={MY_GITHUB}
 			>
 				GitHub
 			</a>
