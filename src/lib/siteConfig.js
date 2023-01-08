@@ -6,7 +6,10 @@ export const SITE_DESCRIPTION = "swyx's default SvelteKit + Tailwind starter";
 export const DEFAULT_OG_IMAGE =
 	'https://user-images.githubusercontent.com/6764957/147861359-3ad9438f-41d1-47c8-aa05-95c7d18497f0.png';
 export const MY_TWITTER_HANDLE = 'georgeoffley';
+export const MY_TWITTER_URL = 'https://twitter.com/georgeoffley';
 export const MY_YOUTUBE = 'https://youtube.com/swyxTV';
+export const MY_LINKEDIN = 'https://www.linkedin.com/in/georgeoffley/';
+export const MY_GITHUB = 'https://github.com/georgeoffley';
 export const POST_CATEGORIES = ['Blog']; // Other categories you can consider adding: Talks, Tutorials, Snippets, Podcasts, Notes...
 export const GH_PUBLISHED_TAGS = ['Published'];
 
