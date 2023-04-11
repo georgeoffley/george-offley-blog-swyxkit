@@ -9,13 +9,8 @@
 				href="/shared-memory-in-docker"
 				><div class="w-full">
 					<div class="flex flex-col justify-between md:flex-row">
-						<h4 class="mb-2 w-full flex-auto text-lg font-bold md:text-xl">Welcome to swyxkit!</h4>
+						<h4 class="mb-2 w-full flex-auto text-lg font-bold md:text-xl">Shared Memory in Docker</h4>
 					</div>
-					<p
-						class="ml-8 text-gray-600  hover:text-yellow-600 dark:text-gray-400 dark:hover:text-yellow-100"
-					>
-						Shared Memory in Docker
-					</p>
 				</div></a
 			>
 			<a
