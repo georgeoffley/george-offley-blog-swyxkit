@@ -15,7 +15,14 @@ import rehypeStringify from 'rehype-stringify';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutoLink from 'rehype-autolink-headings';
 
-const remarkPlugins = undefined;
+import remarkToc from 'remark-toc';
+import remarkGithub from 'remark-github';
+import remarkGfm from 'remark-gfm';
+const remarkPlugins = [
+	remarkToc,
+	[remarkGithub, { repository: 'https://github.com/sw-yx/swyxkit/' }],
+	[remarkGfm, { repository: 'https://github.com/sw-yx/swyxkit/' }],
+];
 const rehypePlugins = [
 	rehypeStringify,
 	rehypeSlug,
@@ -28,6 +35,7 @@ const rehypePlugins = [
 	]
 ];
 
+/** @type {import('./types').ContentItem[]} */
 let allBlogposts = [];
 // let etag = null // todo - implmement etag header
 
@@ -56,6 +64,11 @@ function readingTime(text) {
 	return minutes > 1 ? `${minutes} minutes` : `${minutes} minute`;
 }
 
+
+/**
+ * @param {Function} providedFetch from sveltekit
+ * @returns {Promise<import('./types').ContentItem[]>}
+ */
 export async function listContent(providedFetch) {
 	// use a diff var so as to not have race conditions while fetching
 	// TODO: make sure to handle this better when doing etags or cache restore
@@ -106,6 +119,11 @@ export async function listContent(providedFetch) {
 	return _allBlogposts;
 }
 
+/**
+ * @param {Function} providedFetch from sveltekit
+ * @param {string} slug of the file to retrieve
+ * @returns {Promise<import('./types').ContentItem[]>}
+ */
 export async function getContent(providedFetch, slug) {
 	// get all blogposts if not already done - or in development
 	if (dev || allBlogposts.length === 0) {
@@ -127,7 +145,8 @@ export async function getContent(providedFetch, slug) {
 				function youtube_parser(url) {
 					var rx =
 						/^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]*).*/;
-					return url.match(rx)[1];
+					if (url.match(rx)) return url.match(rx)[1];
+					return url.slice(-11);
 				}
 				const videoId = x.startsWith('https://') ? youtube_parser(x) : x;
 				return `<iframe
@@ -234,9 +253,7 @@ function parseIssue(issue) {
 
 	/** @type {string[]} */
 	let tags = [];
-	if (data.tags) tags = Array.isArray(data.tags) ? data.tags : [data.tags];
-	tags = tags.map((tag) => tag.toLowerCase());
-	// console.log(slug, tags);
+	if (data.tags) tags = Array.isArray(data.tags) ? data.tags : data.tags.split(',').map(x => x.trim());
 
 	return {
 		type: 'blog', // futureproof in case you want to add other types of content
@@ -245,7 +262,7 @@ function parseIssue(issue) {
 		title,
 		subtitle: data.subtitle,
 		description,
-		category: data.category?.toLowerCase() || 'blog',
+		category: data.category?.toLowerCase() || 'note', // all posts assumed to be "note"s unless otherwise specified
 		tags,
 		image: data.image ?? data.cover_image,
 		canonical: data.canonical, // for canonical URLs of something published elsewhere

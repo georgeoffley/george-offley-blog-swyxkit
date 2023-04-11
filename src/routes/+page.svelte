@@ -1,6 +1,7 @@
 <script>
 	import Newsletter from '../components/Newsletter.svelte';
 	import FeatureCard from '../components/FeatureCard.svelte';
+	import LatestPosts from '../components/LatestPosts.svelte';
 	import {
 		SITE_URL,
 		REPO_URL,
@@ -12,14 +13,13 @@
 		MY_GITHUB,
 		MY_TWITTER_URL
 	} from '$lib/siteConfig';
-	export const prerender = true; // index page is most visited, lets prerender
 
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	// technically this is a slighlty different type because doesnt have 'content' but we'll let it slide
 	/** @type {import('$lib/types').ContentItem[]} */
-	$: items = data.items.slice(0, 10);
+	$: items = data.items;
 </script>
 
 <svelte:head>
@@ -160,4 +160,6 @@
 			></a
 		>
 	</section>
+  
+  <LatestPosts {items} />
 </div>

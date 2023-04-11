@@ -1,67 +1,110 @@
 <script>
 	import { MY_TWITTER_HANDLE, SITE_URL } from '$lib/siteConfig';
-	import Comments from '../../components/Comments.svelte';
+	// import Comments from '../../components/Comments.svelte';
 
 	import 'prism-themes/themes/prism-shades-of-purple.min.css';
 	import Newsletter from '../../components/Newsletter.svelte';
 	import Reactions from '../../components/Reactions.svelte';
+	import LatestPosts from '../../components/LatestPosts.svelte';
 	import { page } from '$app/stores';
+
+
+	// https://svelte-put.vnphanquang.com/docs/toc
+  import { toc, createTocStore } from '@svelte-put/toc';
+	import TableOfContents from './TableOfContents.svelte';
+	import utterances, {injectScript}  from './loadUtterances'
+
+	// table of contennts
+  const tocStore = createTocStore();
+
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-
+	
 	/** @type {import('$lib/types').ContentItem} */
 	$: json = data.json; // warning: if you try to destructure content here, make sure to make it reactive, or your page content will not update when your user navigates
 
-	$: canonical = SITE_URL + $page.url.pathname;
+	export let commentsEl;
+	$: issueNumber = json?.ghMetadata?.issueUrl?.split('/')?.pop()
+
+	$: canonical =  json?.canonical ? json.canonical : SITE_URL + $page.url.pathname;
+
+	// customize this with https://tailgraph.com/
+	// discuss this decision at https://github.com/sw-yx/swyxkit/pull/161
+	$: image = json?.image || `https://og.tailgraph.com/og
+															?fontFamily=Roboto
+															&title=${encodeURIComponent(json?.title)}
+															&titleTailwind=font-bold%20bg-transparent%20text-7xl
+															&titleFontFamily=Poppins
+															${json?.subtitle ? '&text='+ encodeURIComponent(json?.subtitle) : ''}
+															&textTailwind=text-2xl%20mt-4
+															&logoTailwind=h-8
+															&bgUrl=https%3A%2F%2Fwallpaper.dog%2Flarge%2F20455104.jpg
+															&footer=${encodeURIComponent(SITE_URL)}
+															&footerTailwind=text-teal-900
+															&containerTailwind=border-2%20border-orange-200%20bg-transparent%20p-4
+															`.replace(/\s/g,'') // remove whitespace
+
 </script>
 
 <svelte:head>
 	<title>{json.title}</title>
-	<meta name="description" content="swyxkit blog" />
+	<!-- reference: https://gist.github.com/whitingx/3840905 -->
 
 	<link rel="canonical" href={canonical} />
 	<meta property="og:url" content={canonical} />
 	<meta property="og:type" content="article" />
 	<meta property="og:title" content={json.title} />
-	<meta name="Description" content={json.description} />
-	<meta property="og:description" content={json.description} />
+	{#if json.subtitle}
+		<meta property="subtitle" content={json.subtitle} />
+	{/if}
+	<meta name="Description" content={json.description || 'swyxkit blog'} />
+	<meta property="og:description" content={json.description || 'swyxkit blog'} />
 	<meta name="twitter:card" content={json.image ? 'summary_large_image' : 'summary'} />
 	<meta name="twitter:creator" content={'@' + MY_TWITTER_HANDLE} />
 	<meta name="twitter:title" content={json.title} />
 	<meta name="twitter:description" content={json.description} />
-	{#if json.image}
-		<meta property="og:image" content={json.image} />
-		<meta name="twitter:image" content={json.image} />
-	{/if}
+	<meta property="og:image" content={image} />
+	<meta name="twitter:image" content={image} />
 </svelte:head>
 
-<article class="swyxcontent prose dark:prose-invert mx-auto mt-16 mb-32 w-full max-w-none items-start justify-center">
-	<h1 class="mb-8 text-3xl font-bold tracking-tight text-black dark:text-white md:text-5xl ">
+<TableOfContents {tocStore} />
+
+<article use:toc={{ store: tocStore, anchor: false, observe: true, selector: ':where(h1, h2, h3)' }} class="items-start justify-center w-full mx-auto mt-16 mb-32 prose swyxcontent dark:prose-invert max-w-none">
+	<h1 class="md:text-center mb-8 text-3xl font-bold tracking-tight text-black dark:text-white md:text-5xl ">
 		{json.title}
 	</h1>
 	<div
-		class="bg mt-2 flex w-full justify-between border-red sm:flex-col sm:items-start md:flex-row md:items-center"
+		class="flex justify-between w-full mt-2 bg border-red sm:items-start md:flex-row md:items-center"
 	>
 		<p class="flex items-center text-sm text-gray-700 dark:text-gray-300">georgeoffley</p>
 		<p class="min-w-32 flex items-center text-sm text-gray-600 dark:text-gray-400 md:mt-0">
 			<a href={json.ghMetadata.issueUrl} rel="external" class="no-underline" target="_blank">
 				<span class="mr-4 font-mono text-xs text-gray-700 text-opacity-70 dark:text-gray-300"
 					>{json.ghMetadata.reactions.total_count} reactions</span
-				>
+				> -->
+				{new Date(json.date).toISOString().slice(0, 10)}
 			</a>
-			{new Date(json.date).toISOString().slice(0, 10)}
 		</p>
 	</div>
 	<div
 		class="-mx-4 my-2 flex h-1 w-[100vw] bg-slate-400 dark:bg-indigo-400 sm:mx-0 sm:w-full"
 	/>
 	{@html json.content}
-	<!-- <div class="swyxcontent prose mt-16 mb-32 w-full max-w-none flex-row dark:prose-invert">
-	</div> -->
 </article>
-<div class="mx-auto max-w-2xl">
-	<div class="prose mb-12 border-t border-b border-blue-800 p-4 dark:prose-invert">
+
+<div class="max-w-2xl mx-auto">
+	{#if json?.tags?.length}
+		<p class="!text-slate-400 flex-auto mb-4 italic">
+			Tagged in: 
+			{#each json.tags as tag}
+				<span class="px-1">
+					<a href={`/blog?filter=hashtag-${tag}`}>#{tag}</a>
+				</span>
+			{/each}
+		</p>
+	{/if}
+	<div class="max-w-full p-4 mb-12 prose border-t border-b border-blue-800 dark:prose-invert">
 		{#if json.ghMetadata.reactions.total_count > 0}
 			Reactions: <Reactions
 				issueUrl={json.ghMetadata.issueUrl}
@@ -72,9 +115,16 @@
 			if you liked this post! 🧡
 		{/if}
 	</div>
-	<div class="mb-8">
-		<Comments ghMetadata={json.ghMetadata} />
+	<div class="mb-8 text-black dark:text-white " bind:this={commentsEl} use:utterances={{number: issueNumber}}>
+		Loading comments...
+		<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+		<button class="my-4 bg-blue-200 hover:bg-blue-100 text-black p-2 rounded-lg" 
+			on:click={() => injectScript(commentsEl, issueNumber)}
+			on:mouseover={() => injectScript(commentsEl, issueNumber)}
+		>Load now</button>
+		<!-- <Comments ghMetadata={json.ghMetadata} /> -->
 	</div>
+	<LatestPosts items={data.list} />
 </div>
 
 <style>
@@ -121,6 +171,11 @@
 		margin-right: -1rem;
 	}
 
+	/* hacky thing because otherwise the summary>pre causes overflow */
+	article :global(summary > pre) {
+		max-width: 90vw;
+	}
+
 	article :global(.popout) {
 		grid-column: popout;
 	}
@@ -134,5 +189,14 @@
 
 	article :global(.admonition) {
 		@apply p-8 border-4 border-red-500;
+	}
+
+	/* fix github codefence diff styling from our chosen prismjs theme */
+	article :global(.token.inserted) {
+		background: #00ff0044;
+	}
+
+	article :global(.token.deleted) {
+		background: #ff000d44;
 	}
 </style>

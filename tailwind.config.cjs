@@ -42,7 +42,7 @@ module.exports = {
 							textDecoration: 'underline !important'
 						},
 						a: {
-							color: '#3182ce',
+							color: '#2071ad',
 							textDecoration: 'none'
 						},
 						'a code': {
@@ -63,7 +63,11 @@ module.exports = {
 						},
 						'ul > li::marker': {
 							color: 'var(--tw-prose-body)'
-						}
+						},
+						'ul > li > p': {
+							marginTop: 0,
+							marginBottom: 0,
+						},
 					}
 				}
 			})
