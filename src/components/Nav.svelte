@@ -41,14 +41,6 @@
 		<li>
 			<NavLink href="/about">About</NavLink>
 		</li>
-		<li>
-			<a
-				class="hidden rounded-lg p-1 text-gray-800 transition-all hover:bg-yellow-200 dark:text-gray-200 dark:hover:bg-yellow-800 sm:px-3 sm:py-2 md:inline-block"
-				rel="external"
-				href={'/rss.xml'}
-				><span class="capsize">RSS</span>
-			</a>
-		</li>
 	</ul>
 	<div class="flex items-center space-x-4">
 		<!-- RSS -->
