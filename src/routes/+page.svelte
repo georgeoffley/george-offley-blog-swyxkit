@@ -129,37 +129,6 @@
 				class="w-[80px] h-[80px] rounded-full sm:w-[176px] sm:h-[136px] relative mb-8 sm:mb-0 mr-auto bg-cyan-300 bg-opacity-25"
 			/> -->
 	</div>	
-
-	<section class="w-full mb-8">
-		<h3 id="latest" class="mb-6 text-2xl font-bold tracking-tight text-black dark:text-white md:text-4xl">
-			Latest Posts
-		</h3>
-		<ul class="space-y-2 text-white">
-			{#each items as item (item.slug)}
-				<li>
-					<a class="font-bold" data-sveltekit-preload-data href={item.slug}>{item.title}</a>
-					<span class="hidden text-xs text-black sm:inline dark:text-gray-400">{new Date(item.date).toISOString().slice(0, 10)}</span>
-				</li>
-			{/each}
-		</ul>
-		<a
-			class="flex h-6 mt-2 leading-7 text-gray-600 transition-all rounded-lg dark:text-gray-400 dark:hover:text-gray-200"
-			href="/blog"
-			>Search and see all posts<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				class="w-6 h-6 ml-1"
-				><path
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M17.5 12h-15m11.667-4l3.333 4-3.333-4zm3.333 4l-3.333 4 3.333-4z"
-				/></svg
-			></a
-		>
-	</section>
   
   <LatestPosts {items} />
 </div>
