@@ -142,8 +142,20 @@
 	{/if}
 
 	<!-- you can hardcode yourmost popular posts or pinned post here if you wish -->
+
 	{#if !$search && !$selectedCategories?.length}
 		<MostPopular />
+		<IndexCard
+			href="/shared-memory-in-docker"
+			title="Shared Memory in Docker"
+			stringData="Many views"
+		/>
+		<IndexCard
+			href="/working-with-context-in-go"
+			title="Working with Context in Go"
+			stringData="Many views"
+		/>
+		<IndexCard href="/context-in-react" title="Context In React" stringData="Manyviews" />
 		<h3 class="mt-8 mb-4 text-2xl font-bold tracking-tight text-black dark:text-white md:text-4xl">
 			All Posts
 		</h3>

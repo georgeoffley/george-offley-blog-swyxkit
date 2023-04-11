@@ -102,7 +102,7 @@ pre {
 }
 /* bg-yellow-200 dark:hover:bg-yellow-800 */
 a {
-	@apply text-yellow-700 hover:text-yellow-700 hover:underline dark:text-yellow-400 dark:hover:text-yellow-200;
+	@apply text-black hover:underline dark:text-white;
 }
 
 /* for the super long github links i drop */
@@ -117,16 +117,7 @@ h5 a,
 h6 a {
 	/* margin-left: 1rem; */
 	text-decoration: none !important;
-	@apply text-orange-700 dark:text-orange-400;
-}
-article.prose h2::before {
-	content: '## ';
-}
-article.prose h3::before {
-	content: '### ';
-}
-article.prose h4::before {
-	content: '#### ';
+	@apply text-orange-700 dark:text-indigo-400;
 }
 
 /* https://seek-oss.github.io/capsize/ */
