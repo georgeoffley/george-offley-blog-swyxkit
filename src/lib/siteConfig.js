@@ -10,7 +10,7 @@ export const MY_TWITTER_URL = 'https://twitter.com/georgeoffley';
 export const MY_YOUTUBE = 'https://youtube.com/swyxTV';
 export const MY_LINKEDIN = 'https://www.linkedin.com/in/georgeoffley/';
 export const MY_GITHUB = 'https://github.com/georgeoffley';
-export const POST_CATEGORIES = ['AWS', 'Docker', 'Notes']; // Other categories you can consider adding: Talks, Tutorials, Snippets, Podcasts, Notes...
+export const POST_CATEGORIES = ['dev-blog']; // Other categories you can consider adding: Talks, Tutorials, Snippets, Podcasts, Notes...
 export const GH_PUBLISHED_TAGS = ['Published'];
 
 // auto generated variables
