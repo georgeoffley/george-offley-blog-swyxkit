@@ -214,7 +214,7 @@ export async function getContent(providedFetch, slug) {
 			// https://github.com/pngwn/MDsveX/issues/392
 			.replace(/>{@html `<code class="language-/g, '><code class="language-')
 			.replace(/<\/code>`}<\/pre>/g, '</code></pre>');
-
+			
 		return { ...blogpost, content };
 	} else {
 		throw new Error('Blogpost not found for slug: ' + slug);
