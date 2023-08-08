@@ -4,3 +4,6 @@ Sitemap: https://swyxkit.netlify.app/sitemap.xml
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
+
+User-agent: GPTBot
+Disallow: /
